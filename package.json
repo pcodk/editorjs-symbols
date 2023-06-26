@@ -1,0 +1,16 @@
+{
+  "name": "editorjs-symbols",
+  "version": "1.0.0",
+  "description": "Insert greek letters and other symbols in EditorJS.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "EditorJS",
+    "Math",
+    "Symbols"
+  ],
+  "author": "KA",
+  "license": "ISC"
+}
