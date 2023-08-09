@@ -51,7 +51,9 @@ class InlineGreekLetters {
         if (result === null) {
             result = new Text(katex_1.default.renderToString(selectedText));
         }
+        console.log(result);
         const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
+        console.log(range);
         range === null || range === void 0 ? void 0 : range.deleteContents();
         range === null || range === void 0 ? void 0 : range.insertNode(result);
     }
