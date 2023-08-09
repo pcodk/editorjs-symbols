@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * ChatGPT-generated (and subsequently modded) plugin to display mathematical symbols.
@@ -6,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * To add symbols, add an identifier in the createGreekLetter method and find the hex
  * code here: https://www.htmlhelp.com/reference/html40/entities/symbols.html
  */
+const katex_1 = __importDefault(require("katex"));
 class InlineGreekLetters {
     constructor({ config, api }) {
         this.config = config;
@@ -36,10 +40,13 @@ class InlineGreekLetters {
         var _a, _b;
         // this.button.addEventListener('click', () => {
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
-        const greekLetter = this.createGreekLetter(selectedText);
+        let result = this.createGreekLetter(selectedText);
+        if (result === null) {
+            result = new Text(katex_1.default.renderToString(selectedText));
+        }
         const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
         range === null || range === void 0 ? void 0 : range.deleteContents();
-        range === null || range === void 0 ? void 0 : range.insertNode(greekLetter);
+        range === null || range === void 0 ? void 0 : range.insertNode(result);
     }
     render() {
         this.button.classList.add(this.api.styles.inlineToolButton);
@@ -107,7 +114,10 @@ class InlineGreekLetters {
         const allSymbols = Object.assign(Object.assign({}, greekLetters), this.config.symbols);
         // const greekLetterElement = document.createElement('span');
         // greekLetterElement.textContent = allSymbols[letter] || letter;
-        return new Text(allSymbols[letter] || letter); // greekLetterElement;
+        if (letter in allSymbols) {
+            return new Text(allSymbols[letter]); // greekLetterElement;
+        }
+        return null;
     }
     save() {
         return {
