@@ -49,6 +49,9 @@ class InlineGreekLetters {
     }
 
     surround() {
+        const range = window.getSelection()?.getRangeAt(0);
+        range?.deleteContents();
+
         // this.button.classList.add(this.api.styles.inlineToolButton);
         // this.button.innerHTML = this.config.buttonIcon;
 
@@ -56,14 +59,11 @@ class InlineGreekLetters {
         const selectedText = window.getSelection()?.toString() + "";
         let result = this.createGreekLetter(selectedText);
         if (result === null) {
-            result = new Text(katex.renderToString(selectedText));
+            const katexResult = katex.renderToString(selectedText);
+            console.log(katexResult);
+        } else {
+            range?.insertNode(result);
         }
-        console.log(result);
-        const range = window.getSelection()?.getRangeAt(0);
-        console.log(range);
-        range?.deleteContents();
-        range?.insertNode(result);
-
     }
 
     render() {

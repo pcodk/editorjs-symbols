@@ -42,20 +42,21 @@ class InlineGreekLetters {
         }
     }
     surround() {
+        var _a, _b;
+        const range = (_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.getRangeAt(0);
+        range === null || range === void 0 ? void 0 : range.deleteContents();
         // this.button.classList.add(this.api.styles.inlineToolButton);
         // this.button.innerHTML = this.config.buttonIcon;
-        var _a, _b;
         // this.button.addEventListener('click', () => {
-        const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
+        const selectedText = ((_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.toString()) + "";
         let result = this.createGreekLetter(selectedText);
         if (result === null) {
-            result = new Text(katex_1.default.renderToString(selectedText));
+            const katexResult = katex_1.default.renderToString(selectedText);
+            console.log(katexResult);
         }
-        console.log(result);
-        const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
-        console.log(range);
-        range === null || range === void 0 ? void 0 : range.deleteContents();
-        range === null || range === void 0 ? void 0 : range.insertNode(result);
+        else {
+            range === null || range === void 0 ? void 0 : range.insertNode(result);
+        }
     }
     render() {
         this.button.classList.add(this.api.styles.inlineToolButton);
