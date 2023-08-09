@@ -41,6 +41,7 @@ class InlineGreekLetters {
         // this.button.addEventListener('click', () => {
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
         let result = this.createGreekLetter(selectedText);
+        console.log(result);
         if (result === null) {
             result = new Text(katex_1.default.renderToString(selectedText));
         }
@@ -51,6 +52,7 @@ class InlineGreekLetters {
     render() {
         this.button.classList.add(this.api.styles.inlineToolButton);
         this.button.innerHTML = this.icon;
+        console.log(1);
         // this.button.addEventListener('click', () => {
         //     const selectedText = window.getSelection()?.toString() + "";
         //     const greekLetter = this.createGreekLetter(selectedText);
@@ -61,6 +63,7 @@ class InlineGreekLetters {
         return this.button;
     }
     createGreekLetter(letter) {
+        console.log(letter);
         const greekLetters = {
             Alpha: '\u0391',
             alpha: '\u03B1',
