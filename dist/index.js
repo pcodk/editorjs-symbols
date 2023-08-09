@@ -20,8 +20,8 @@ class InlineGreekLetters {
     }
     static get sanitize() {
         return {
-            mark: {
-                class: 'latex-render'
+            customKatex: function (el) {
+                return el;
             }
         };
     }
@@ -51,8 +51,12 @@ class InlineGreekLetters {
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
         let result = this.createGreekLetter(selectedText);
         if (result === null) {
-            const katexResult = document.createElement('span');
+            const katexResult = document.createElement('customKatex');
             katexResult.innerHTML = katex_1.default.renderToString(selectedText);
+            const hiddenValue = document.createElement('input');
+            hiddenValue.type = 'hidden';
+            hiddenValue.value = selectedText;
+            katexResult.append(hiddenValue);
             katexResult.classList.add('latex-render');
             const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
             range === null || range === void 0 ? void 0 : range.deleteContents();
