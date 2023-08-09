@@ -49,10 +49,11 @@ class InlineGreekLetters {
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
         let result = this.createGreekLetter(selectedText);
         if (result === null) {
-            const katexResult = new MathMLElement();
+            const katexResult = new HTMLSpanElement();
             katexResult.innerHTML = katex_1.default.renderToString(selectedText);
             const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
             range === null || range === void 0 ? void 0 : range.deleteContents();
+            console.log(katexResult);
             range === null || range === void 0 ? void 0 : range.insertNode(katexResult);
         }
         else {
