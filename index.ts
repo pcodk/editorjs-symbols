@@ -49,9 +49,6 @@ class InlineGreekLetters {
     }
 
     surround() {
-        const range = window.getSelection()?.getRangeAt(0);
-        range?.deleteContents();
-
         // this.button.classList.add(this.api.styles.inlineToolButton);
         // this.button.innerHTML = this.config.buttonIcon;
 
@@ -61,8 +58,12 @@ class InlineGreekLetters {
         if (result === null) {
             const katexResult = new MathMLElement();
             katexResult.innerHTML = katex.renderToString(selectedText);
+            const range = window.getSelection()?.getRangeAt(0);
+            range?.deleteContents();
             range?.insertNode(katexResult);
         } else {
+            const range = window.getSelection()?.getRangeAt(0);
+            range?.deleteContents();
             range?.insertNode(result);
         }
     }

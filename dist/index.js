@@ -42,20 +42,22 @@ class InlineGreekLetters {
         }
     }
     surround() {
-        var _a, _b;
-        const range = (_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.getRangeAt(0);
-        range === null || range === void 0 ? void 0 : range.deleteContents();
         // this.button.classList.add(this.api.styles.inlineToolButton);
         // this.button.innerHTML = this.config.buttonIcon;
+        var _a, _b, _c;
         // this.button.addEventListener('click', () => {
-        const selectedText = ((_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.toString()) + "";
+        const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
         let result = this.createGreekLetter(selectedText);
         if (result === null) {
             const katexResult = new MathMLElement();
             katexResult.innerHTML = katex_1.default.renderToString(selectedText);
+            const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
+            range === null || range === void 0 ? void 0 : range.deleteContents();
             range === null || range === void 0 ? void 0 : range.insertNode(katexResult);
         }
         else {
+            const range = (_c = window.getSelection()) === null || _c === void 0 ? void 0 : _c.getRangeAt(0);
+            range === null || range === void 0 ? void 0 : range.deleteContents();
             range === null || range === void 0 ? void 0 : range.insertNode(result);
         }
     }
