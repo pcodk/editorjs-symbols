@@ -23,7 +23,7 @@ class InlineGreekLetters {
     static get sanitize() {
         return {
             customkatex: function (el: HTMLElement) {
-                el.innerHTML = 'test';
+                el.innerHTML = 'dimitar';
                 return el;
             }
         };
