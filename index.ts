@@ -22,8 +22,8 @@ class InlineGreekLetters {
 
     static get sanitize() {
         return {
-            math: true,
-            semantics: true
+            math: {},
+            semantics: {}
         };
     }
 
