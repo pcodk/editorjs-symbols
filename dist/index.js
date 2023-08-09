@@ -21,7 +21,7 @@ class InlineGreekLetters {
     static get sanitize() {
         return {
             mark: {
-                class: 'katex-mathml'
+                class: 'katex-mathml',
             }
         };
     }
@@ -34,10 +34,12 @@ class InlineGreekLetters {
     checkState(selection) {
         const text = selection.anchorNode;
         if (!text) {
+            console.log('in !text');
             return;
         }
         const anchorElement = text instanceof Element ? text : text.parentElement;
         if (anchorElement) {
+            console.log('in achromelement');
             this.state = !!anchorElement.closest('MARK');
         }
     }
@@ -49,7 +51,7 @@ class InlineGreekLetters {
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
         let result = this.createGreekLetter(selectedText);
         if (result === null) {
-            const katexResult = new HTMLSpanElement();
+            const katexResult = new HTMLSpanElement;
             katexResult.innerHTML = katex_1.default.renderToString(selectedText);
             const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
             range === null || range === void 0 ? void 0 : range.deleteContents();

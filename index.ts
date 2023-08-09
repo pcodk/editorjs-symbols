@@ -23,11 +23,10 @@ class InlineGreekLetters {
     static get sanitize() {
         return {
             mark: {
-                class: 'katex-mathml'
+                class: 'katex-mathml',
             }
-        };
+        }
     }
-
     static get toolbox() {
         return {
             title: 'Greek Letters',
@@ -39,11 +38,13 @@ class InlineGreekLetters {
         const text = selection.anchorNode;
 
         if (!text) {
+            console.log('in !text')
             return;
         }
 
         const anchorElement = text instanceof Element ? text : text.parentElement;
         if (anchorElement) {
+            console.log('in achromelement');
             this.state = !!anchorElement.closest('MARK');
         }
     }
@@ -56,7 +57,7 @@ class InlineGreekLetters {
         const selectedText = window.getSelection()?.toString() + "";
         let result = this.createGreekLetter(selectedText);
         if (result === null) {
-            const katexResult = new HTMLSpanElement();
+            const katexResult = new HTMLSpanElement;
             katexResult.innerHTML = katex.renderToString(selectedText);
             const range = window.getSelection()?.getRangeAt(0);
             range?.deleteContents();
