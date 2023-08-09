@@ -20,7 +20,8 @@ class InlineGreekLetters {
     }
     static get sanitize() {
         return {
-            customKatex: function (el) {
+            customkatex: function (el) {
+                el.innerHTML = 'test';
                 return el;
             }
         };
@@ -51,7 +52,7 @@ class InlineGreekLetters {
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
         let result = this.createGreekLetter(selectedText);
         if (result === null) {
-            const katexResult = document.createElement('customKatex');
+            const katexResult = document.createElement('customkatex');
             katexResult.innerHTML = katex_1.default.renderToString(selectedText);
             const hiddenValue = document.createElement('input');
             hiddenValue.type = 'hidden';
