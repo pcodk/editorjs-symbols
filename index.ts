@@ -59,8 +59,9 @@ class InlineGreekLetters {
         const selectedText = window.getSelection()?.toString() + "";
         let result = this.createGreekLetter(selectedText);
         if (result === null) {
-            const katexResult = katex.renderToString(selectedText);
-            console.log(katexResult);
+            const katexResult = new MathMLElement();
+            katexResult.innerHTML = katex.renderToString(selectedText);
+            range?.insertNode(katexResult);
         } else {
             range?.insertNode(result);
         }
