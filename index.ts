@@ -22,8 +22,9 @@ class InlineGreekLetters {
 
     static get sanitize() {
         return {
-            math: {},
-            semantics: {}
+            mark: {
+                class: 'katex'
+            }
         }
     }
 
