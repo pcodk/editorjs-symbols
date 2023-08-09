@@ -12,5 +12,9 @@
     "Symbols"
   ],
   "author": "KA",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@types/katex": "^0.16.2",
+    "katex": "^0.16.8"
+  }
 }

@@ -4,6 +4,8 @@
  * To add symbols, add an identifier in the createGreekLetter method and find the hex
  * code here: https://www.htmlhelp.com/reference/html40/entities/symbols.html
  */
+import katex from 'katex';
+
 class InlineGreekLetters {
     api;
     config;
@@ -39,16 +41,18 @@ class InlineGreekLetters {
     }
 
     surround() {
-
         // this.button.classList.add(this.api.styles.inlineToolButton);
         // this.button.innerHTML = this.config.buttonIcon;
 
         // this.button.addEventListener('click', () => {
         const selectedText = window.getSelection()?.toString() + "";
-        const greekLetter = this.createGreekLetter(selectedText);
+        let result = this.createGreekLetter(selectedText);
+        if (result === null) {
+            result = new Text(katex.renderToString(selectedText));
+        }
         const range = window.getSelection()?.getRangeAt(0);
         range?.deleteContents();
-        range?.insertNode(greekLetter);
+        range?.insertNode(result);
 
     }
 
@@ -127,8 +131,10 @@ class InlineGreekLetters {
 
         // const greekLetterElement = document.createElement('span');
         // greekLetterElement.textContent = allSymbols[letter] || letter;
-
-        return new Text(allSymbols[letter] || letter); // greekLetterElement;
+        if (letter in allSymbols) {
+            return new Text(allSymbols[letter]);  // greekLetterElement;
+        }
+        return null;
     }
 
     save() {
