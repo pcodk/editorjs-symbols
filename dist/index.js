@@ -20,9 +20,8 @@ class InlineGreekLetters {
     }
     static get sanitize() {
         return {
-            mark: {
-                class: 'katex-mathml',
-            }
+            math: {},
+            semantics: {}
         };
     }
     static get toolbox() {
