@@ -58,7 +58,9 @@ class InlineGreekLetters {
         if (result === null) {
             result = new Text(katex.renderToString(selectedText));
         }
+        console.log(result);
         const range = window.getSelection()?.getRangeAt(0);
+        console.log(range);
         range?.deleteContents();
         range?.insertNode(result);
 
