@@ -5,6 +5,7 @@
  * code here: https://www.htmlhelp.com/reference/html40/entities/symbols.html
  */
 import katex from 'katex';
+import styles from "./css/index.d.css";
 
 class InlineGreekLetters {
     api;
@@ -29,7 +30,7 @@ class InlineGreekLetters {
 
 
     static get CSS() {
-        return 'cdx-latex-render';
+        return styles.cdxLatexRender;
     };
 
     static get sanitize() {
@@ -180,16 +181,9 @@ class InlineGreekLetters {
     }
 
     render() {
-        this.button.classList.add(this.api.styles.inlineToolButton);
+        this.button.type = 'button';
+        this.button.classList.add(this.iconClasses.base);
         this.button.innerHTML = this.icon;
-
-        // this.button.addEventListener('click', () => {
-        //     const selectedText = window.getSelection()?.toString() + "";
-        //     const greekLetter = this.createGreekLetter(selectedText);
-        //     const range = window.getSelection()?.getRangeAt(0);
-        //     range?.deleteContents();
-        //     range?.insertNode(greekLetter);
-        // });
 
         return this.button;
     }
