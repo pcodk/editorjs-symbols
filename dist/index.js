@@ -24,7 +24,7 @@ class InlineGreekLetters {
         };
     }
     static get CSS() {
-        return 'cdx-latex-reder';
+        return 'cdx-latex-render';
     }
     ;
     static get sanitize() {
@@ -54,6 +54,7 @@ class InlineGreekLetters {
         var _a, _b;
         console.log('entering surround');
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
+        console.log(this.api.selection);
         let termWrapper = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
         console.log(termWrapper);
         console.log(this.tag);

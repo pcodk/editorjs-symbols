@@ -29,7 +29,7 @@ class InlineGreekLetters {
 
 
     static get CSS() {
-        return 'cdx-latex-reder';
+        return 'cdx-latex-render';
     };
 
     static get sanitize() {
@@ -63,7 +63,7 @@ class InlineGreekLetters {
     surround(range: any) {
         console.log('entering surround');
         const selectedText = window.getSelection()?.toString() + "";
-
+        console.log(this.api.selection);
         let termWrapper = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
         console.log(termWrapper)
         console.log(this.tag);
