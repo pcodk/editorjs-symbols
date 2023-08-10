@@ -5,6 +5,8 @@
  * code here: https://www.htmlhelp.com/reference/html40/entities/symbols.html
  */
 import katex from 'katex';
+// @ts-ignore
+require('./index.css').toString();
 
 class InlineGreekLetters {
     api;
@@ -56,7 +58,11 @@ class InlineGreekLetters {
             }
         } else {
             this.button?.classList.remove(this.iconClasses.active);
-
+            const katexResult = document.getElementById("latex-render-actions");
+            if (katexResult) {
+                katexResult.style.display = 'none';
+                katexResult.innerText = '';
+            }
         }
     }
 

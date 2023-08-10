@@ -10,6 +10,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * code here: https://www.htmlhelp.com/reference/html40/entities/symbols.html
  */
 const katex_1 = __importDefault(require("katex"));
+// @ts-ignore
+require('./index.css').toString();
 class InlineGreekLetters {
     constructor({ config, api }) {
         this.config = config;
@@ -51,6 +53,11 @@ class InlineGreekLetters {
         }
         else {
             (_b = this.button) === null || _b === void 0 ? void 0 : _b.classList.remove(this.iconClasses.active);
+            const katexResult = document.getElementById("latex-render-actions");
+            if (katexResult) {
+                katexResult.style.display = 'none';
+                katexResult.innerText = '';
+            }
         }
     }
     clear() {
