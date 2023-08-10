@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run clean && tsc && npm run copy-files",
     "clean": "rm -rf ./dist",
-    "copy-files": "cp -r ./index.css ./dist/"
+    "copy-files": "cp -r ./index.module.css ./dist/"
   },
   "keywords": [
     "EditorJS",

@@ -5,13 +5,11 @@
  * code here: https://www.htmlhelp.com/reference/html40/entities/symbols.html
  */
 import katex from 'katex';
-// @ts-ignore
-require('./index.css').toString();
 
 class InlineGreekLetters {
     api;
     config;
-    button: HTMLButtonElement;
+    button: HTMLButtonElement|null;
     state: boolean;
     icon: string;
     tag: string;
@@ -19,8 +17,8 @@ class InlineGreekLetters {
     constructor({ config, api }: any) {
         this.config = config;
         this.api = api;
-        this.button = document.createElement('button');
         this.state = false;
+        this.button = null;
         this.icon = '&Phi;'; // '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2"><path d="M17.143 12.5c0-3.498-2.845-6.333-6.357-6.333-3.513 0-6.358 2.835-6.358 6.333s2.845 6.333 6.358 6.333c3.512 0 6.357-2.835 6.357-6.333zm-4.035-3.083l-1.607 3.085-1.608-3.085h3.215zm3.143 5.583c0 1.63-1.326 2.958-2.964 2.958h-2.572v-1.5h2.572c.81 0 1.464-.654 1.464-1.458v-.084c0-.64-.418-1.18-.987-1.376l.662-1.538h-.935l-.618 1.437h-1.607v-1.437h1.607l-.618-1.437h.95l.662 1.538c-.568.196-.968.736-.968 1.376v.084c0 .804.654 1.458 1.464 1.458h2.572v1.5h-2.572c-1.638 0-2.964-1.328-2.964-2.958h-.015v-.084c0-.644.415-1.193.99-1.39l-.683-1.587h1.015l.638 1.475h1.571v-1.475h-1.572l.638-1.475h1.015l-.683 1.587c.576.196.99.746.99 1.39v.084h.016zm-6.358-7.333c2.078 0 3.767 1.682 3.767 3.75s-1.689 3.75-3.767 3.75c-2.078 0-3.767-1.682-3.767-3.75s1.689-3.75 3.767-3.75zm0 1.5c1.183 0 2.143.957 2.143 2.25s-.96 2.25-2.143 2.25c-1.183 0-2.143-.957-2.143-2.25s.96-2.25 2.143-2.25z"/></svg>';
         this.tag = 'span';
         this.iconClasses = {
@@ -31,7 +29,7 @@ class InlineGreekLetters {
 
 
     static get CSS() {
-        return 'ctx-latex-reder';
+        return 'cdx-latex-reder';
     };
 
     static get sanitize() {
@@ -59,7 +57,7 @@ class InlineGreekLetters {
 
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
 
-        this.button.classList.toggle(this.iconClasses.active, !!termTag);
+        this.button?.classList.toggle(this.iconClasses.active, !!termTag);
     }
 
     surround(range: any) {
@@ -182,6 +180,7 @@ class InlineGreekLetters {
     }
 
     render() {
+        this.button = document.createElement('button');
         this.button.type = 'button';
         this.button.classList.add(this.iconClasses.base);
         this.button.innerHTML = this.icon;
@@ -267,7 +266,7 @@ class InlineGreekLetters {
 
     save() {
         return {
-            greekLetter: this.button.textContent,
+            greekLetter: this.button?.textContent,
         };
     }
 
