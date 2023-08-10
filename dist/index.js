@@ -47,10 +47,11 @@ class InlineGreekLetters {
     surround() {
         // this.button.classList.add(this.api.styles.inlineToolButton);
         // this.button.innerHTML = this.config.buttonIcon;
-        var _a, _b;
+        var _a, _b, _c;
         // this.button.addEventListener('click', () => {
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
         let result = this.createGreekLetter(selectedText);
+        const toInsert = document.createElement('span');
         if (result === null) {
             /*
             const katexResult = document.createElement('customkatex');
@@ -71,11 +72,18 @@ class InlineGreekLetters {
                 katexResult.innerHTML = katex_1.default.renderToString(selectedText);
                 katexResult.style.display = 'block';
             }
+            const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
+            toInsert.innerText = selectedText;
+            range === null || range === void 0 ? void 0 : range.deleteContents();
+            range === null || range === void 0 ? void 0 : range.insertNode(toInsert);
         }
         else {
-            const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
+            if (result.textContent) {
+                toInsert.innerText = result.textContent;
+            }
+            const range = (_c = window.getSelection()) === null || _c === void 0 ? void 0 : _c.getRangeAt(0);
             range === null || range === void 0 ? void 0 : range.deleteContents();
-            range === null || range === void 0 ? void 0 : range.insertNode(result);
+            range === null || range === void 0 ? void 0 : range.insertNode(toInsert);
         }
     }
     render() {
