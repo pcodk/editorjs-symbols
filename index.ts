@@ -73,8 +73,12 @@ class InlineGreekLetters {
             //range?.deleteContents();
             //console.log(katexResult);
             //range?.insertNode(katexResult);
-            const katexResult = document.getElementsByClassName('latex-render');
-            katexResult[0].innerHTML = katex.renderToString(selectedText);
+            const katexResult = document.getElementById("latex-render-actions");
+            if (katexResult) {
+                katexResult.innerHTML = katex.renderToString(selectedText);
+                katexResult.style.display = 'block';
+            }
+
         } else {
             const range = window.getSelection()?.getRangeAt(0);
             range?.deleteContents();
@@ -98,9 +102,9 @@ class InlineGreekLetters {
     }
 
     renderActions() {
-        const selectedText = window.getSelection()?.toString() + "";
+        //const selectedText = window.getSelection()?.toString() + "";
         const katexResult = document.createElement('span');
-        katexResult.classList.add('latex-render');
+        katexResult.setAttribute("id", "latex-render-actions")
         katexResult.style.display = 'none';
 
 

@@ -47,25 +47,33 @@ class InlineGreekLetters {
     surround() {
         // this.button.classList.add(this.api.styles.inlineToolButton);
         // this.button.innerHTML = this.config.buttonIcon;
-        var _a, _b, _c;
+        var _a, _b;
         // this.button.addEventListener('click', () => {
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
         let result = this.createGreekLetter(selectedText);
         if (result === null) {
+            /*
             const katexResult = document.createElement('customkatex');
-            katexResult.innerHTML = katex_1.default.renderToString(selectedText);
+            katexResult.innerHTML = katex.renderToString(selectedText);
             const hiddenValue = document.createElement('input');
             hiddenValue.type = 'hidden';
             hiddenValue.value = selectedText;
-            katexResult.append(hiddenValue);
+            katexResult.append(hiddenValue)
             katexResult.classList.add('latex-render');
-            const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
-            range === null || range === void 0 ? void 0 : range.deleteContents();
-            console.log(katexResult);
-            range === null || range === void 0 ? void 0 : range.insertNode(katexResult);
+
+             */
+            //const range = window.getSelection()?.getRangeAt(0);
+            //range?.deleteContents();
+            //console.log(katexResult);
+            //range?.insertNode(katexResult);
+            const katexResult = document.getElementById("latex-render-actions");
+            if (katexResult) {
+                katexResult.innerHTML = katex_1.default.renderToString(selectedText);
+                katexResult.style.display = 'block';
+            }
         }
         else {
-            const range = (_c = window.getSelection()) === null || _c === void 0 ? void 0 : _c.getRangeAt(0);
+            const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
             range === null || range === void 0 ? void 0 : range.deleteContents();
             range === null || range === void 0 ? void 0 : range.insertNode(result);
         }
@@ -83,10 +91,10 @@ class InlineGreekLetters {
         return this.button;
     }
     renderActions() {
-        var _a;
-        const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
-        const katexResult = document.createElement('customkatex');
-        katexResult.innerHTML = katex_1.default.renderToString(selectedText);
+        //const selectedText = window.getSelection()?.toString() + "";
+        const katexResult = document.createElement('span');
+        katexResult.setAttribute("id", "latex-render-actions");
+        katexResult.style.display = 'none';
         return katexResult;
     }
     createGreekLetter(letter) {
