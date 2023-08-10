@@ -47,11 +47,16 @@ class InlineGreekLetters {
         }
 
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
+        if (termTag) {
+            this.button?.classList.add(this.iconClasses.active);
+        } else {
+            this.button?.classList.remove(this.iconClasses.active);
 
-        this.button?.classList.toggle(this.iconClasses.active, !!termTag);
+        }
         const katexResult = document.getElementById("latex-render-actions");
         if (katexResult) {
             katexResult.style.display = 'block';
+            this.showResultInActions(termTag.innerText);
         }
     }
 
@@ -75,7 +80,7 @@ class InlineGreekLetters {
 
         let result = this.createGreekLetter(selectedText);
         const toInsert = document.createElement('span');
-        this.showResultInActions(result, selectedText);
+        this.showResultInActions(selectedText);
         if (result === null) {
 
         } else {
@@ -89,7 +94,9 @@ class InlineGreekLetters {
         }
     }
 
-    showResultInActions(result: Text|null, selectedText: string) {
+    showResultInActions(selectedText: string) {
+        let result = this.createGreekLetter(selectedText);
+
         const element = document.getElementById("latex-render-actions");
         if (!element) {
             return;

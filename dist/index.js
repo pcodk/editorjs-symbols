@@ -34,16 +34,22 @@ class InlineGreekLetters {
         };
     }
     checkState(selection) {
-        var _a;
+        var _a, _b;
         const text = selection.anchorNode;
         if (!text) {
             return;
         }
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
-        (_a = this.button) === null || _a === void 0 ? void 0 : _a.classList.toggle(this.iconClasses.active, !!termTag);
+        if (termTag) {
+            (_a = this.button) === null || _a === void 0 ? void 0 : _a.classList.add(this.iconClasses.active);
+        }
+        else {
+            (_b = this.button) === null || _b === void 0 ? void 0 : _b.classList.remove(this.iconClasses.active);
+        }
         const katexResult = document.getElementById("latex-render-actions");
         if (katexResult) {
             katexResult.style.display = 'block';
+            this.showResultInActions(termTag.innerText);
         }
     }
     clear() {
@@ -64,7 +70,7 @@ class InlineGreekLetters {
         }
         let result = this.createGreekLetter(selectedText);
         const toInsert = document.createElement('span');
-        this.showResultInActions(result, selectedText);
+        this.showResultInActions(selectedText);
         if (result === null) {
         }
         else {
@@ -76,7 +82,8 @@ class InlineGreekLetters {
             range === null || range === void 0 ? void 0 : range.insertNode(toInsert);
         }
     }
-    showResultInActions(result, selectedText) {
+    showResultInActions(selectedText) {
+        let result = this.createGreekLetter(selectedText);
         const element = document.getElementById("latex-render-actions");
         if (!element) {
             return;
