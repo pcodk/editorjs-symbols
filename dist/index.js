@@ -10,7 +10,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * code here: https://www.htmlhelp.com/reference/html40/entities/symbols.html
  */
 const katex_1 = __importDefault(require("katex"));
-const index_d_css_1 = __importDefault(require("./css/index.d.css"));
+// @ts-ignore
+require('./index.css').toString();
 class InlineGreekLetters {
     constructor({ config, api }) {
         this.config = config;
@@ -25,7 +26,7 @@ class InlineGreekLetters {
         };
     }
     static get CSS() {
-        return index_d_css_1.default.cdxLatexRender;
+        return 'ctx-latex-reder';
     }
     ;
     static get sanitize() {

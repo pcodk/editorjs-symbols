@@ -5,7 +5,8 @@
  * code here: https://www.htmlhelp.com/reference/html40/entities/symbols.html
  */
 import katex from 'katex';
-import styles from "./css/index.d.css";
+// @ts-ignore
+require('./index.css').toString();
 
 class InlineGreekLetters {
     api;
@@ -30,7 +31,7 @@ class InlineGreekLetters {
 
 
     static get CSS() {
-        return styles.cdxLatexRender;
+        return 'ctx-latex-reder';
     };
 
     static get sanitize() {
