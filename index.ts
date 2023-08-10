@@ -164,7 +164,10 @@ class InlineGreekLetters {
          * Remove empty term-tag
          */
         termWrapper.parentNode?.removeChild(termWrapper);
-
+        console.log('range');
+        console.log(range);
+        console.log('unwrapptedContent');
+        console.log(unwrappedContent)
         if (range && unwrappedContent) {
             /**
              * Insert extracted content
