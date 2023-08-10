@@ -133,6 +133,7 @@ class InlineGreekLetters {
      */
     unwrap(termWrapper) {
         var _a;
+        console.log('entering unwrap');
         /**
          * Expand selection to all term-tag
          */
@@ -140,6 +141,7 @@ class InlineGreekLetters {
         let sel = window.getSelection();
         let range = sel === null || sel === void 0 ? void 0 : sel.getRangeAt(0);
         let unwrappedContent = range === null || range === void 0 ? void 0 : range.extractContents();
+        console.log(termWrapper);
         /**
          * Remove empty term-tag
          */
@@ -158,6 +160,7 @@ class InlineGreekLetters {
              */
             sel === null || sel === void 0 ? void 0 : sel.removeAllRanges();
             sel === null || sel === void 0 ? void 0 : sel.addRange(range);
+            console.log('ending unwrap');
         }
     }
     render() {

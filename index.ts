@@ -150,6 +150,7 @@ class InlineGreekLetters {
      * @param {HTMLElement} termWrapper - term wrapper tag
      */
     unwrap(termWrapper: HTMLElement) {
+        console.log('entering unwrap');
         /**
          * Expand selection to all term-tag
          */
@@ -159,7 +160,7 @@ class InlineGreekLetters {
         let range = sel?.getRangeAt(0);
 
         let unwrappedContent = range?.extractContents();
-
+        console.log(termWrapper);
         /**
          * Remove empty term-tag
          */
@@ -179,6 +180,8 @@ class InlineGreekLetters {
              */
             sel?.removeAllRanges();
             sel?.addRange(range);
+            console.log('ending unwrap');
+
         }
     }
 
