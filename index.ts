@@ -75,13 +75,9 @@ class InlineGreekLetters {
 
         let result = this.createGreekLetter(selectedText);
         const toInsert = document.createElement('span');
-        console.log(result);
+        this.showResultInActions(result, selectedText);
         if (result === null) {
-            const katexResult = document.getElementById("latex-render-actions");
-            if (katexResult) {
-                katexResult.innerHTML = katex.renderToString(selectedText);
-                katexResult.style.display = 'block';
-            }
+
         } else {
             if (result.textContent) {
                 toInsert.innerText = result.textContent;
@@ -91,6 +87,20 @@ class InlineGreekLetters {
             range?.deleteContents();
             range?.insertNode(toInsert);
         }
+    }
+
+    showResultInActions(result: Text|null, selectedText: string) {
+        const element = document.getElementById("latex-render-actions");
+        if (!element) {
+            return;
+        }
+
+        if (result && result.textContent) {
+            element.innerHTML = result.textContent;
+        } else {
+            element.innerHTML = katex.renderToString(selectedText);
+        }
+        element.style.display = 'block';
     }
 
     /**

@@ -64,13 +64,8 @@ class InlineGreekLetters {
         }
         let result = this.createGreekLetter(selectedText);
         const toInsert = document.createElement('span');
-        console.log(result);
+        this.showResultInActions(result, selectedText);
         if (result === null) {
-            const katexResult = document.getElementById("latex-render-actions");
-            if (katexResult) {
-                katexResult.innerHTML = katex_1.default.renderToString(selectedText);
-                katexResult.style.display = 'block';
-            }
         }
         else {
             if (result.textContent) {
@@ -80,6 +75,19 @@ class InlineGreekLetters {
             range === null || range === void 0 ? void 0 : range.deleteContents();
             range === null || range === void 0 ? void 0 : range.insertNode(toInsert);
         }
+    }
+    showResultInActions(result, selectedText) {
+        const element = document.getElementById("latex-render-actions");
+        if (!element) {
+            return;
+        }
+        if (result && result.textContent) {
+            element.innerHTML = result.textContent;
+        }
+        else {
+            element.innerHTML = katex_1.default.renderToString(selectedText);
+        }
+        element.style.display = 'block';
     }
     /**
      * Wrap selection with term-tag
