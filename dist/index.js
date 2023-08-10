@@ -72,10 +72,13 @@ class InlineGreekLetters {
         let termWrapper = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
         if (termWrapper) {
             this.unwrap(termWrapper);
+            console.log('unwrapping');
         }
         else {
             this.wrap(range);
+            console.log('wrapping');
         }
+        console.log(selectedText);
         let result = this.createGreekLetter(selectedText);
         const toInsert = document.createElement('span');
         this.showResultInActions(selectedText);
@@ -91,6 +94,8 @@ class InlineGreekLetters {
         }
     }
     showResultInActions(selectedText) {
+        console.log('shoowww');
+        console.log(selectedText);
         let result = this.createGreekLetter(selectedText);
         const element = document.getElementById("latex-render-actions");
         if (!element) {

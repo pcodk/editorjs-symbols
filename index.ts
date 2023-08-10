@@ -80,10 +80,12 @@ class InlineGreekLetters {
 
         if (termWrapper) {
             this.unwrap(termWrapper);
+            console.log('unwrapping');
         } else {
             this.wrap(range);
+            console.log('wrapping');
         }
-
+        console.log(selectedText);
         let result = this.createGreekLetter(selectedText);
         const toInsert = document.createElement('span');
         this.showResultInActions(selectedText);
@@ -101,6 +103,8 @@ class InlineGreekLetters {
     }
 
     showResultInActions(selectedText: string) {
+        console.log('shoowww')
+        console.log(selectedText);
         let result = this.createGreekLetter(selectedText);
 
         const element = document.getElementById("latex-render-actions");
