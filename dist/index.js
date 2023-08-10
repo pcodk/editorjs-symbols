@@ -27,14 +27,6 @@ class InlineGreekLetters {
         return 'cdx-latex-render';
     }
     ;
-    static get sanitize() {
-        return {
-            customkatex: function (el) {
-                el.innerHTML = 'dimitar';
-                return el;
-            }
-        };
-    }
     static get toolbox() {
         return {
             title: 'Greek Letters',
@@ -52,17 +44,8 @@ class InlineGreekLetters {
     }
     surround(range) {
         var _a, _b;
-        console.log('entering surround');
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
-        console.log(window.getSelection());
-        console.log(this.api.selection);
         let termWrapper = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
-        console.log(termWrapper);
-        console.log(this.tag);
-        console.log(InlineGreekLetters.CSS);
-        /**
-         * If start or end of selection is in the highlighted block
-         */
         if (termWrapper) {
             this.unwrap(termWrapper);
         }
@@ -71,33 +54,13 @@ class InlineGreekLetters {
         }
         let result = this.createGreekLetter(selectedText);
         const toInsert = document.createElement('span');
+        console.log(result);
         if (result === null) {
-            /*
-            const katexResult = document.createElement('customkatex');
-            katexResult.innerHTML = katex.renderToString(selectedText);
-            const hiddenValue = document.createElement('input');
-            hiddenValue.type = 'hidden';
-            hiddenValue.value = selectedText;
-            katexResult.append(hiddenValue)
-            katexResult.classList.add('latex-render');
-
-             */
-            //const range = window.getSelection()?.getRangeAt(0);
-            //range?.deleteContents();
-            //console.log(katexResult);
-            //range?.insertNode(katexResult);
             const katexResult = document.getElementById("latex-render-actions");
             if (katexResult) {
                 katexResult.innerHTML = katex_1.default.renderToString(selectedText);
                 katexResult.style.display = 'block';
             }
-            /*
-            const range = window.getSelection()?.getRangeAt(0);
-            toInsert.innerText = selectedText;
-            range?.deleteContents();
-            range?.insertNode(toInsert);
-
-             */
         }
         else {
             if (result.textContent) {
@@ -107,7 +70,6 @@ class InlineGreekLetters {
             range === null || range === void 0 ? void 0 : range.deleteContents();
             range === null || range === void 0 ? void 0 : range.insertNode(toInsert);
         }
-        console.log('ending surround');
     }
     /**
      * Wrap selection with term-tag
@@ -140,7 +102,6 @@ class InlineGreekLetters {
      */
     unwrap(termWrapper) {
         var _a;
-        console.log('entering unwrap');
         /**
          * Expand selection to all term-tag
          */
@@ -148,15 +109,10 @@ class InlineGreekLetters {
         let sel = window.getSelection();
         let range = sel === null || sel === void 0 ? void 0 : sel.getRangeAt(0);
         let unwrappedContent = range === null || range === void 0 ? void 0 : range.extractContents();
-        console.log(termWrapper);
         /**
          * Remove empty term-tag
          */
         (_a = termWrapper.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(termWrapper);
-        console.log('range');
-        console.log(range);
-        console.log('unwrapptedContent');
-        console.log(unwrappedContent);
         if (range && unwrappedContent) {
             /**
              * Insert extracted content
@@ -167,7 +123,6 @@ class InlineGreekLetters {
              */
             sel === null || sel === void 0 ? void 0 : sel.removeAllRanges();
             sel === null || sel === void 0 ? void 0 : sel.addRange(range);
-            console.log('ending unwrap');
         }
     }
     render() {
@@ -178,7 +133,6 @@ class InlineGreekLetters {
         return this.button;
     }
     renderActions() {
-        //const selectedText = window.getSelection()?.toString() + "";
         const katexResult = document.createElement('span');
         katexResult.setAttribute("id", "latex-render-actions");
         katexResult.style.display = 'none';
