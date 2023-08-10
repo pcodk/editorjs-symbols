@@ -49,6 +49,17 @@ class InlineGreekLetters {
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
 
         this.button?.classList.toggle(this.iconClasses.active, !!termTag);
+        const katexResult = document.getElementById("latex-render-actions");
+        if (katexResult) {
+            katexResult.style.display = 'block';
+        }
+    }
+
+    clear() {
+        const katexResult = document.getElementById("latex-render-actions");
+        if (katexResult) {
+            katexResult.style.display = 'none';
+        }
     }
 
     surround(range: any) {
