@@ -50,6 +50,7 @@ class InlineGreekLetters {
 
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
         if (termTag) {
+            console.log('chcek state in termtag');
             this.button?.classList.add(this.iconClasses.active);
             const katexResult = document.getElementById("latex-render-actions");
             if (katexResult) {
@@ -57,6 +58,8 @@ class InlineGreekLetters {
                 this.showResultInActions(termTag.innerText);
             }
         } else {
+
+            console.log('chcek state in no termtag');
             this.button?.classList.remove(this.iconClasses.active);
             const katexResult = document.getElementById("latex-render-actions");
             if (katexResult) {
