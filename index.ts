@@ -49,14 +49,14 @@ class InlineGreekLetters {
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
         if (termTag) {
             this.button?.classList.add(this.iconClasses.active);
+            const katexResult = document.getElementById("latex-render-actions");
+            if (katexResult) {
+                katexResult.style.display = 'block';
+                this.showResultInActions(termTag.innerText);
+            }
         } else {
             this.button?.classList.remove(this.iconClasses.active);
 
-        }
-        const katexResult = document.getElementById("latex-render-actions");
-        if (katexResult) {
-            katexResult.style.display = 'block';
-            this.showResultInActions(termTag.innerText);
         }
     }
 

@@ -42,14 +42,14 @@ class InlineGreekLetters {
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
         if (termTag) {
             (_a = this.button) === null || _a === void 0 ? void 0 : _a.classList.add(this.iconClasses.active);
+            const katexResult = document.getElementById("latex-render-actions");
+            if (katexResult) {
+                katexResult.style.display = 'block';
+                this.showResultInActions(termTag.innerText);
+            }
         }
         else {
             (_b = this.button) === null || _b === void 0 ? void 0 : _b.classList.remove(this.iconClasses.active);
-        }
-        const katexResult = document.getElementById("latex-render-actions");
-        if (katexResult) {
-            katexResult.style.display = 'block';
-            this.showResultInActions(termTag.innerText);
         }
     }
     clear() {
