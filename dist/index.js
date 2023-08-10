@@ -36,6 +36,7 @@ class InlineGreekLetters {
     checkState(selection) {
         var _a, _b;
         const text = selection.anchorNode;
+        console.log(this.state);
         if (!text) {
             return;
         }
