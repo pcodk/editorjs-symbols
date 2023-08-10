@@ -52,8 +52,12 @@ class InlineGreekLetters {
     }
     surround(range) {
         var _a, _b;
+        console.log('entering surround');
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
         let termWrapper = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
+        console.log(termWrapper);
+        console.log(this.tag);
+        console.log(InlineGreekLetters.CSS);
         /**
          * If start or end of selection is in the highlighted block
          */
@@ -101,6 +105,7 @@ class InlineGreekLetters {
             range === null || range === void 0 ? void 0 : range.deleteContents();
             range === null || range === void 0 ? void 0 : range.insertNode(toInsert);
         }
+        console.log('ending surround');
     }
     /**
      * Wrap selection with term-tag

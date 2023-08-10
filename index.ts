@@ -61,10 +61,13 @@ class InlineGreekLetters {
     }
 
     surround(range: any) {
+        console.log('entering surround');
         const selectedText = window.getSelection()?.toString() + "";
 
         let termWrapper = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
-
+        console.log(termWrapper)
+        console.log(this.tag);
+        console.log(InlineGreekLetters.CSS);
         /**
          * If start or end of selection is in the highlighted block
          */
@@ -114,6 +117,7 @@ class InlineGreekLetters {
             range?.deleteContents();
             range?.insertNode(toInsert);
         }
+        console.log('ending surround');
     }
 
     /**
