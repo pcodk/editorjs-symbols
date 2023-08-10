@@ -59,6 +59,7 @@ class InlineGreekLetters {
         const selectedText = window.getSelection()?.toString() + "";
         let result = this.createGreekLetter(selectedText);
         if (result === null) {
+            /*
             const katexResult = document.createElement('customkatex');
             katexResult.innerHTML = katex.renderToString(selectedText);
             const hiddenValue = document.createElement('input');
@@ -66,10 +67,14 @@ class InlineGreekLetters {
             hiddenValue.value = selectedText;
             katexResult.append(hiddenValue)
             katexResult.classList.add('latex-render');
-            const range = window.getSelection()?.getRangeAt(0);
-            range?.deleteContents();
-            console.log(katexResult);
-            range?.insertNode(katexResult);
+
+             */
+            //const range = window.getSelection()?.getRangeAt(0);
+            //range?.deleteContents();
+            //console.log(katexResult);
+            //range?.insertNode(katexResult);
+            const katexResult = document.getElementsByClassName('latex-render');
+            katexResult[0].innerHTML = katex.renderToString(selectedText);
         } else {
             const range = window.getSelection()?.getRangeAt(0);
             range?.deleteContents();
@@ -94,8 +99,11 @@ class InlineGreekLetters {
 
     renderActions() {
         const selectedText = window.getSelection()?.toString() + "";
-        const katexResult = document.createElement('customkatex');
-        katexResult.innerHTML = katex.renderToString(selectedText);
+        const katexResult = document.createElement('span');
+        katexResult.classList.add('latex-render');
+        katexResult.style.display = 'none';
+
+
         return katexResult;
     }
 
