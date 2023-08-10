@@ -84,6 +84,13 @@ class InlineGreekLetters {
         if (termWrapper) {
             this.unwrap(termWrapper);
             console.log('unwrapping');
+            const element = document.getElementById("latex-render-actions");
+            if (!element) {
+                return;
+            }
+            element.innerText = '';
+            element.style.display = 'none';
+            return;
         } else {
             this.wrap(range);
             console.log('wrapping');
