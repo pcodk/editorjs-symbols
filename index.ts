@@ -92,6 +92,13 @@ class InlineGreekLetters {
         return this.button;
     }
 
+    renderActions() {
+        const selectedText = window.getSelection()?.toString() + "";
+        const katexResult = document.createElement('customkatex');
+        katexResult.innerHTML = katex.renderToString(selectedText);
+        return katexResult;
+    }
+
     createGreekLetter(letter: string) {
         const greekLetters: Record<string, string> = {
             Alpha: '\u0391',

@@ -82,6 +82,13 @@ class InlineGreekLetters {
         // });
         return this.button;
     }
+    renderActions() {
+        var _a;
+        const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
+        const katexResult = document.createElement('customkatex');
+        katexResult.innerHTML = katex_1.default.renderToString(selectedText);
+        return katexResult;
+    }
     createGreekLetter(letter) {
         const greekLetters = {
             Alpha: '\u0391',
