@@ -109,8 +109,11 @@ class Symbols {
             try {
                 element.innerHTML = katex.renderToString(selectedText);
             } catch (e) {
-                alert('Incorrect katex expression');
+                alert('Incorrect katex expression. Please edit the selected text.');
+                this.unwrap(this.api.selection.findParentTag(this.tag, Symbols.CSS));
                 element.innerHTML = '';
+                element.style.display = 'none';
+                return;
             }
         }
         element.style.display = 'block';
