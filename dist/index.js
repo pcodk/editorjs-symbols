@@ -24,7 +24,7 @@ class Symbols {
             base: this.api.styles.inlineToolButton,
             active: this.api.styles.inlineToolButtonActive
         };
-        this.actionsElementId = 'latex-render-actions';
+        this.actionsElementId = 'cdx-latex-render-actions';
     }
     static get CSS() {
         return 'cdx-latex-render';
