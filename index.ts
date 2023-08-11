@@ -49,15 +49,15 @@ class Symbols {
             return;
         }
 
-        const termTag = this.api.selection.findParentTag(this.tag, Symbols.CSS);
+        const wrapperElement = this.api.selection.findParentTag(this.tag, Symbols.CSS);
         const actionsElement = document.getElementById(this.actionsElementId);
         if (!actionsElement) {
             return;
         }
-        if (termTag) {
+        if (wrapperElement) {
             this.button?.classList.add(this.iconClasses.active);
             actionsElement.style.display = 'block';
-            this.addActionsContent(termTag.innerText);
+            this.addActionsContent(wrapperElement.innerText);
         } else {
             this.button?.classList.remove(this.iconClasses.active);
             actionsElement.style.display = 'none';
@@ -75,19 +75,20 @@ class Symbols {
     surround(range: any) {
         const selectedText = window.getSelection()?.toString() + "";
 
-        let termWrapper = this.api.selection.findParentTag(this.tag, Symbols.CSS);
+        let wrapperElement = this.api.selection.findParentTag(this.tag, Symbols.CSS);
 
-        if (termWrapper) {
-            this.unwrap(termWrapper);
+        if (wrapperElement) {
+            this.unwrap(wrapperElement);
             this.clearActionsContent();
             return;
         }
+        this.wrap(range);
+
         try {
-            this.wrap(range);
             this.addActionsContent(selectedText);
         } catch (e) {
             alert('Irregular katex');
-            this.unwrap(termWrapper);
+            this.unwrap(wrapperElement);
             this.clearActionsContent();
         }
     }
@@ -119,9 +120,9 @@ class Symbols {
 
     wrap(range: Range) {
         //Create a wrapper for highlighting
-        let supElement = document.createElement(this.tag);
+        let wrapperElement = document.createElement(this.tag);
 
-        supElement.classList.add(Symbols.CSS);
+        wrapperElement.classList.add(Symbols.CSS);
 
         /**
          * SurroundContent throws an error if the Range splits a non-Text node with only one of its boundary points
@@ -129,23 +130,23 @@ class Symbols {
          *
          * // range.surroundContents(sup);
          */
-        supElement.appendChild(range.extractContents());
-        range.insertNode(supElement);
+        wrapperElement.appendChild(range.extractContents());
+        range.insertNode(wrapperElement);
 
         // Expand (add) selection to highlighted block
-        this.api.selection.expandToTag(supElement);
+        this.api.selection.expandToTag(wrapperElement);
     }
 
-    unwrap(termWrapper: HTMLElement) {
+    unwrap(wrapperElement: HTMLElement) {
         //Expand selection to all term-tag
-        this.api.selection.expandToTag(termWrapper);
+        this.api.selection.expandToTag(wrapperElement);
 
         let sel = window.getSelection();
         let range = sel?.getRangeAt(0);
 
         let unwrappedContent = range?.extractContents();
         // Remove empty term-tag
-        termWrapper.parentNode?.removeChild(termWrapper);
+        wrapperElement.parentNode?.removeChild(wrapperElement);
         if (range && unwrappedContent) {
             //Insert extracted content
             range?.insertNode(unwrappedContent);

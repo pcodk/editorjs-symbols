@@ -42,15 +42,15 @@ class Symbols {
         if (!text) {
             return;
         }
-        const termTag = this.api.selection.findParentTag(this.tag, Symbols.CSS);
+        const wrapperElement = this.api.selection.findParentTag(this.tag, Symbols.CSS);
         const actionsElement = document.getElementById(this.actionsElementId);
         if (!actionsElement) {
             return;
         }
-        if (termTag) {
+        if (wrapperElement) {
             (_a = this.button) === null || _a === void 0 ? void 0 : _a.classList.add(this.iconClasses.active);
             actionsElement.style.display = 'block';
-            this.addActionsContent(termTag.innerText);
+            this.addActionsContent(wrapperElement.innerText);
         }
         else {
             (_b = this.button) === null || _b === void 0 ? void 0 : _b.classList.remove(this.iconClasses.active);
@@ -67,19 +67,19 @@ class Symbols {
     surround(range) {
         var _a;
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
-        let termWrapper = this.api.selection.findParentTag(this.tag, Symbols.CSS);
-        if (termWrapper) {
-            this.unwrap(termWrapper);
+        let wrapperElement = this.api.selection.findParentTag(this.tag, Symbols.CSS);
+        if (wrapperElement) {
+            this.unwrap(wrapperElement);
             this.clearActionsContent();
             return;
         }
+        this.wrap(range);
         try {
-            this.wrap(range);
             this.addActionsContent(selectedText);
         }
         catch (e) {
             alert('Irregular katex');
-            this.unwrap(termWrapper);
+            this.unwrap(wrapperElement);
             this.clearActionsContent();
         }
     }
@@ -107,28 +107,28 @@ class Symbols {
     }
     wrap(range) {
         //Create a wrapper for highlighting
-        let supElement = document.createElement(this.tag);
-        supElement.classList.add(Symbols.CSS);
+        let wrapperElement = document.createElement(this.tag);
+        wrapperElement.classList.add(Symbols.CSS);
         /**
          * SurroundContent throws an error if the Range splits a non-Text node with only one of its boundary points
          * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Range/surroundContents}
          *
          * // range.surroundContents(sup);
          */
-        supElement.appendChild(range.extractContents());
-        range.insertNode(supElement);
+        wrapperElement.appendChild(range.extractContents());
+        range.insertNode(wrapperElement);
         // Expand (add) selection to highlighted block
-        this.api.selection.expandToTag(supElement);
+        this.api.selection.expandToTag(wrapperElement);
     }
-    unwrap(termWrapper) {
+    unwrap(wrapperElement) {
         var _a;
         //Expand selection to all term-tag
-        this.api.selection.expandToTag(termWrapper);
+        this.api.selection.expandToTag(wrapperElement);
         let sel = window.getSelection();
         let range = sel === null || sel === void 0 ? void 0 : sel.getRangeAt(0);
         let unwrappedContent = range === null || range === void 0 ? void 0 : range.extractContents();
         // Remove empty term-tag
-        (_a = termWrapper.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(termWrapper);
+        (_a = wrapperElement.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(wrapperElement);
         if (range && unwrappedContent) {
             //Insert extracted content
             range === null || range === void 0 ? void 0 : range.insertNode(unwrappedContent);
