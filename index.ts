@@ -57,6 +57,7 @@ class InlineGreekLetters {
         }
 
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
+        console.log(termTag);
         if (termTag) {
             this.button?.classList.add(this.iconClasses.active);
             this.toggleRenderActions(termTag.innerText);
@@ -73,29 +74,26 @@ class InlineGreekLetters {
         }
     }
 
+    getContent(selectedText: string) {
+        const greekLetter =  this.createGreekLetter(selectedText);
+        if (greekLetter) {
+            return greekLetter;
+        }
+        return katex.renderToString(selectedText);
+    }
+
     surround(range: any) {
         const selectedText = window.getSelection()?.toString() + "";
 
         let termWrapper = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
-
+        const content = this.getContent(selectedText);
         if (termWrapper) {
             this.unwrap(termWrapper);
-            console.log('unwrapping');
-            const element = document.getElementById("latex-render-actions");
-            if (!element) {
-                return;
-            }
-            element.innerText = '';
-            element.style.display = 'none';
-            return;
+            this.toggleRenderActions('');
         } else {
             this.wrap(range);
-            console.log('wrapping');
+            this.toggleRenderActions(content);
         }
-        console.log(selectedText);
-        let result = this.createGreekLetter(selectedText);
-        const toInsert = document.createElement('span');
-        this.showResultInActions(selectedText);
     }
 
     showResultInActions(selectedText: string) {
@@ -252,11 +250,8 @@ class InlineGreekLetters {
             ...this.config.symbols
         };
 
-
-        // const greekLetterElement = document.createElement('span');
-        // greekLetterElement.textContent = allSymbols[letter] || letter;
         if (letter in allSymbols) {
-            return new Text(allSymbols[letter]);  // greekLetterElement;
+            return allSymbols[letter];
         }
         return null;
     }

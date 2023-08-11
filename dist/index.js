@@ -50,6 +50,7 @@ class InlineGreekLetters {
             return;
         }
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
+        console.log(termTag);
         if (termTag) {
             (_a = this.button) === null || _a === void 0 ? void 0 : _a.classList.add(this.iconClasses.active);
             this.toggleRenderActions(termTag.innerText);
@@ -65,29 +66,26 @@ class InlineGreekLetters {
             katexResult.style.display = 'none';
         }
     }
+    getContent(selectedText) {
+        const greekLetter = this.createGreekLetter(selectedText);
+        if (greekLetter) {
+            return greekLetter;
+        }
+        return katex_1.default.renderToString(selectedText);
+    }
     surround(range) {
         var _a;
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
         let termWrapper = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
+        const content = this.getContent(selectedText);
         if (termWrapper) {
             this.unwrap(termWrapper);
-            console.log('unwrapping');
-            const element = document.getElementById("latex-render-actions");
-            if (!element) {
-                return;
-            }
-            element.innerText = '';
-            element.style.display = 'none';
-            return;
+            this.toggleRenderActions('');
         }
         else {
             this.wrap(range);
-            console.log('wrapping');
+            this.toggleRenderActions(content);
         }
-        console.log(selectedText);
-        let result = this.createGreekLetter(selectedText);
-        const toInsert = document.createElement('span');
-        this.showResultInActions(selectedText);
     }
     showResultInActions(selectedText) {
         console.log('shoowww');
@@ -224,10 +222,8 @@ class InlineGreekLetters {
             omega: '\u03C9',
         };
         const allSymbols = Object.assign(Object.assign({}, greekLetters), this.config.symbols);
-        // const greekLetterElement = document.createElement('span');
-        // greekLetterElement.textContent = allSymbols[letter] || letter;
         if (letter in allSymbols) {
-            return new Text(allSymbols[letter]); // greekLetterElement;
+            return allSymbols[letter];
         }
         return null;
     }
