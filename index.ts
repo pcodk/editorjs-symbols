@@ -43,36 +43,31 @@ class InlineGreekLetters {
 
     checkState(selection: Selection) {
         const text = selection.anchorNode;
-        console.log(this.state);
         if (!text) {
             return;
         }
 
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
-        if (termTag) {
-            console.log('chcek state in termtag');
-            this.button?.classList.add(this.iconClasses.active);
-            const katexResult = document.getElementById("latex-render-actions");
-            if (katexResult) {
-                katexResult.style.display = 'block';
-                this.showResultInActions(termTag.innerText);
-            }
-        } else {
 
-            console.log('chcek state in no termtag');
-            this.button?.classList.remove(this.iconClasses.active);
-            const katexResult = document.getElementById("latex-render-actions");
-            if (katexResult) {
-                katexResult.style.display = 'none';
-                katexResult.innerText = '';
-            }
-        }
+        this.toggleActionsElement(termTag.innerText ? termTag.innerText : '');
     }
 
     clear() {
-        const katexResult = document.getElementById("latex-render-actions");
-        if (katexResult) {
-            katexResult.style.display = 'none';
+        this.toggleActionsElement('');
+    }
+
+    toggleActionsElement(content: string) {
+        const element = document.getElementById("latex-render-actions");
+        if (!element) {
+            return;
+        }
+        if (content) {
+            element.style.display = 'block';
+            this.showResultInActions(content);
+            this.button?.classList.add(this.iconClasses.active);
+        } else {
+            element.style.display = 'none'
+            this.button?.classList.remove(this.iconClasses.active);
         }
     }
 
@@ -83,22 +78,16 @@ class InlineGreekLetters {
 
         if (termWrapper) {
             this.unwrap(termWrapper);
-            console.log('unwrapping');
-            const element = document.getElementById("latex-render-actions");
-            if (!element) {
-                return;
-            }
-            element.innerText = '';
-            element.style.display = 'none';
+            this.toggleActionsElement('');
             return;
-        } else {
-            this.wrap(range);
-            console.log('wrapping');
         }
-        console.log(selectedText);
+
+        this.wrap(range);
+        this.showResultInActions(selectedText);
+        return;
+        /*
         let result = this.createGreekLetter(selectedText);
         const toInsert = document.createElement('span');
-        this.showResultInActions(selectedText);
         if (result === null) {
 
         } else {
@@ -110,24 +99,12 @@ class InlineGreekLetters {
             range?.deleteContents();
             range?.insertNode(toInsert);
         }
+        */
     }
 
     showResultInActions(selectedText: string) {
-        console.log('shoowww')
-        console.log(selectedText);
-        let result = this.createGreekLetter(selectedText);
-
-        const element = document.getElementById("latex-render-actions");
-        if (!element) {
-            return;
-        }
-
-        if (result && result.textContent) {
-            element.innerHTML = result.textContent;
-        } else {
-            element.innerHTML = katex.renderToString(selectedText);
-        }
-        element.style.display = 'block';
+        const greekLetter = this.createGreekLetter(selectedText);
+        this.toggleActionsElement(greekLetter ? greekLetter : katex.renderToString(selectedText));
     }
 
     /**
@@ -201,12 +178,10 @@ class InlineGreekLetters {
     }
 
     renderActions() {
-        const katexResult = document.createElement('span');
-        katexResult.setAttribute("id", "latex-render-actions")
-        katexResult.style.display = 'none';
-
-
-        return katexResult;
+        const element = document.createElement('span');
+        element.setAttribute("id", "latex-render-actions")
+        element.style.display = 'none';
+        return element;
     }
 
     createGreekLetter(letter: string) {
@@ -267,10 +242,8 @@ class InlineGreekLetters {
         };
 
 
-        // const greekLetterElement = document.createElement('span');
-        // greekLetterElement.textContent = allSymbols[letter] || letter;
         if (letter in allSymbols) {
-            return new Text(allSymbols[letter]);  // greekLetterElement;
+            return allSymbols[letter];  // greekLetterElement;
         }
         return null;
     }
