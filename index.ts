@@ -86,6 +86,7 @@ class Symbols {
             this.wrap(range);
             this.addActionsContent(selectedText);
         } catch (e) {
+            alert('Irregular katex');
             this.unwrap(termWrapper);
             this.clearActionsContent();
         }
