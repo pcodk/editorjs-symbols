@@ -36,12 +36,16 @@ class InlineGreekLetters {
         };
     }
     toggleRenderActions(content) {
+        console.log('toggleRenderActions');
+        console.log(content);
         const element = document.getElementById("latex-render-actions");
+        console.log(element);
         if (!element) {
             return;
         }
         element.innerText = content;
         element.style.display = content ? 'none' : 'block';
+        console.log('toggleRenderActions end');
     }
     checkState(selection) {
         var _a, _b;
