@@ -41,31 +41,28 @@ class InlineGreekLetters {
         };
     }
 
+    toggleRenderActions(content: string) {
+        const element = document.getElementById("latex-render-actions");
+        if (!element) {
+            return;
+        }
+        element.innerText = content;
+        element.style.display = content ? 'none' : 'block';
+    }
+
     checkState(selection: Selection) {
         const text = selection.anchorNode;
-        console.log(this.state);
         if (!text) {
             return;
         }
 
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
         if (termTag) {
-            console.log('chcek state in termtag');
             this.button?.classList.add(this.iconClasses.active);
-            const katexResult = document.getElementById("latex-render-actions");
-            if (katexResult) {
-                katexResult.style.display = 'block';
-                this.showResultInActions(termTag.innerText);
-            }
+            this.toggleRenderActions(termTag.innerText);
         } else {
-
-            console.log('chcek state in no termtag');
             this.button?.classList.remove(this.iconClasses.active);
-            const katexResult = document.getElementById("latex-render-actions");
-            if (katexResult) {
-                katexResult.style.display = 'none';
-                katexResult.innerText = '';
-            }
+            this.toggleRenderActions('');
         }
     }
 
