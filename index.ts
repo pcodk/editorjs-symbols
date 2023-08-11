@@ -16,6 +16,7 @@ class InlineGreekLetters {
     icon: string;
     tag: string;
     iconClasses: { base: string, active: string };
+    actionsElementId: string;
     constructor({ config, api }: any) {
         this.config = config;
         this.api = api;
@@ -27,8 +28,8 @@ class InlineGreekLetters {
             base: this.api.styles.inlineToolButton,
             active: this.api.styles.inlineToolButtonActive
         };
+        this.actionsElementId = 'latex-render-actions';
     }
-
 
     static get CSS() {
         return 'cdx-latex-render';
@@ -43,46 +44,32 @@ class InlineGreekLetters {
 
     checkState(selection: Selection) {
         const text = selection.anchorNode;
-        console.log(this.state);
+
         if (!text) {
             return;
         }
 
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
+        const actionsElement = document.getElementById(this.actionsElementId);
+        if (!actionsElement) {
+            return;
+        }
         if (termTag) {
-            console.log('chcek state in termtag');
             this.button?.classList.add(this.iconClasses.active);
-            const katexResult = document.getElementById("latex-render-actions");
-            if (katexResult) {
-                katexResult.style.display = 'block';
-                this.showResultInActions(termTag.innerText);
-            }
+            actionsElement.style.display = 'block';
+            this.addActionsContent(termTag.innerText);
         } else {
-
-            console.log('chcek state in no termtag');
             this.button?.classList.remove(this.iconClasses.active);
-            const katexResult = document.getElementById("latex-render-actions");
-            if (katexResult) {
-                katexResult.style.display = 'none';
-                katexResult.innerText = '';
-            }
+            actionsElement.style.display = 'none';
+            actionsElement.innerText = '';
         }
     }
 
     clear() {
-        const katexResult = document.getElementById("latex-render-actions");
-        if (katexResult) {
-            katexResult.style.display = 'none';
+        const element = document.getElementById(this.actionsElementId);
+        if (element) {
+            element.style.display = 'none';
         }
-    }
-
-    clearActionsContent() {
-        const element = document.getElementById("latex-render-actions");
-        if (!element) {
-            return;
-        }
-        element.innerText = '';
-        element.style.display = 'none';
     }
 
     surround(range: any) {
@@ -94,25 +81,30 @@ class InlineGreekLetters {
             this.unwrap(termWrapper);
             this.clearActionsContent();
             return;
-        } else {
-            this.wrap(range);
-            console.log('wrapping');
         }
-        this.showResultInActions(selectedText);
+        this.wrap(range);
+        this.addActionsContent(selectedText);
     }
 
-    showResultInActions(selectedText: string) {
-        console.log('shoowww')
-        console.log(selectedText);
-        let result = this.createGreekLetter(selectedText);
+    clearActionsContent() {
+        const element = document.getElementById(this.actionsElementId);
+        if (!element) {
+            return;
+        }
+        element.innerText = '';
+        element.style.display = 'none';
+    }
 
-        const element = document.getElementById("latex-render-actions");
+    addActionsContent(selectedText: string) {
+        const greekLetter = this.createGreekLetter(selectedText);
+
+        const element = document.getElementById(this.actionsElementId);
         if (!element) {
             return;
         }
 
-        if (result && result.textContent) {
-            element.innerHTML = result.textContent;
+        if (greekLetter && greekLetter.textContent) {
+            element.innerHTML = greekLetter.textContent;
         } else {
             element.innerHTML = katex.renderToString(selectedText);
         }
@@ -191,10 +183,8 @@ class InlineGreekLetters {
 
     renderActions() {
         const katexResult = document.createElement('span');
-        katexResult.setAttribute("id", "latex-render-actions")
+        katexResult.setAttribute("id", this.actionsElementId)
         katexResult.style.display = 'none';
-
-
         return katexResult;
     }
 
@@ -255,9 +245,6 @@ class InlineGreekLetters {
             ...this.config.symbols
         };
 
-
-        // const greekLetterElement = document.createElement('span');
-        // greekLetterElement.textContent = allSymbols[letter] || letter;
         if (letter in allSymbols) {
             return new Text(allSymbols[letter]);  // greekLetterElement;
         }
