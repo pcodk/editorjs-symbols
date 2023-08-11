@@ -82,8 +82,13 @@ class Symbols {
             this.clearActionsContent();
             return;
         }
-        this.wrap(range);
-        this.addActionsContent(selectedText);
+        try {
+            this.wrap(range);
+            this.addActionsContent(selectedText);
+        } catch (e) {
+            this.unwrap(termWrapper);
+            this.clearActionsContent();
+        }
     }
 
     clearActionsContent() {
