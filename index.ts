@@ -33,7 +33,7 @@ class Symbols {
 
     static get CSS() {
         return 'cdx-latex-render';
-    };
+    }
 
     static get toolbox() {
         return {
