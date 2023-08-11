@@ -49,7 +49,7 @@ class InlineGreekLetters {
 
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
 
-        this.toggleActionsElement(termTag.innerText ? termTag.innerText : '');
+        this.toggleActionsElement(termTag && termTag.innerText ? termTag.innerText : '');
     }
 
     clear() {
@@ -84,7 +84,6 @@ class InlineGreekLetters {
 
         this.wrap(range);
         this.showResultInActions(selectedText);
-        return;
         /*
         let result = this.createGreekLetter(selectedText);
         const toInsert = document.createElement('span');

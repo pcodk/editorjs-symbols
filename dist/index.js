@@ -41,7 +41,7 @@ class InlineGreekLetters {
             return;
         }
         const termTag = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
-        this.toggleActionsElement(termTag.innerText ? termTag.innerText : '');
+        this.toggleActionsElement(termTag && termTag.innerText ? termTag.innerText : '');
     }
     clear() {
         this.toggleActionsElement('');
