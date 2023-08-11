@@ -96,17 +96,6 @@ class InlineGreekLetters {
         let result = this.createGreekLetter(selectedText);
         const toInsert = document.createElement('span');
         this.showResultInActions(selectedText);
-        if (result === null) {
-
-        } else {
-            if (result.textContent) {
-                toInsert.innerText = result.textContent;
-            }
-
-            const range = window.getSelection()?.getRangeAt(0);
-            range?.deleteContents();
-            range?.insertNode(toInsert);
-        }
     }
 
     showResultInActions(selectedText: string) {

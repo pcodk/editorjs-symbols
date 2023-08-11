@@ -66,7 +66,7 @@ class InlineGreekLetters {
         }
     }
     surround(range) {
-        var _a, _b;
+        var _a;
         const selectedText = ((_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) + "";
         let termWrapper = this.api.selection.findParentTag(this.tag, InlineGreekLetters.CSS);
         if (termWrapper) {
@@ -88,16 +88,6 @@ class InlineGreekLetters {
         let result = this.createGreekLetter(selectedText);
         const toInsert = document.createElement('span');
         this.showResultInActions(selectedText);
-        if (result === null) {
-        }
-        else {
-            if (result.textContent) {
-                toInsert.innerText = result.textContent;
-            }
-            const range = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.getRangeAt(0);
-            range === null || range === void 0 ? void 0 : range.deleteContents();
-            range === null || range === void 0 ? void 0 : range.insertNode(toInsert);
-        }
     }
     showResultInActions(selectedText) {
         console.log('shoowww');
