@@ -83,14 +83,7 @@ class Symbols {
             return;
         }
         this.wrap(range);
-
-        try {
-            this.addActionsContent(selectedText);
-        } catch (e) {
-            alert('Irregular katex');
-            this.unwrap(wrapperElement);
-            this.clearActionsContent();
-        }
+        this.addActionsContent(selectedText);
     }
 
     clearActionsContent() {
@@ -113,7 +106,12 @@ class Symbols {
         if (greekLetter && greekLetter.textContent) {
             element.innerHTML = greekLetter.textContent;
         } else {
-            element.innerHTML = katex.renderToString(selectedText);
+            try {
+                element.innerHTML = katex.renderToString(selectedText);
+            } catch (e) {
+                alert('Incorrect katex expression');
+                element.innerHTML = '';
+            }
         }
         element.style.display = 'block';
     }

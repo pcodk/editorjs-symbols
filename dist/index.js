@@ -74,14 +74,7 @@ class Symbols {
             return;
         }
         this.wrap(range);
-        try {
-            this.addActionsContent(selectedText);
-        }
-        catch (e) {
-            alert('Irregular katex');
-            this.unwrap(wrapperElement);
-            this.clearActionsContent();
-        }
+        this.addActionsContent(selectedText);
     }
     clearActionsContent() {
         const element = document.getElementById(this.actionsElementId);
@@ -101,7 +94,13 @@ class Symbols {
             element.innerHTML = greekLetter.textContent;
         }
         else {
-            element.innerHTML = katex_1.default.renderToString(selectedText);
+            try {
+                element.innerHTML = katex_1.default.renderToString(selectedText);
+            }
+            catch (e) {
+                alert('Incorrect katex expression');
+                element.innerHTML = '';
+            }
         }
         element.style.display = 'block';
     }
