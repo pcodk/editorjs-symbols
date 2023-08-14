@@ -1,28 +1,50 @@
 /**
- * ChatGPT-generated (and subsequently modded) plugin to display mathematical symbols.
- *
+
  * To add symbols, add an identifier in the createGreekLetter method and find the hex
  * code here: https://www.htmlhelp.com/reference/html40/entities/symbols.html
+ *
+ * if greek symbol is not found we display Katex - https://katex.org/
  */
-class InlineGreekLetters {
+import katex from 'katex';
+// @ts-ignore
+require('./index.css').toString();
+
+class Symbols {
     api;
     config;
-    button: HTMLButtonElement;
+    button: HTMLButtonElement|null;
     state: boolean;
     icon: string;
+    tag: string;
+    iconClasses: { base: string, active: string };
+    actionsElementId: string;
     constructor({ config, api }: any) {
         this.config = config;
         this.api = api;
-        this.button = document.createElement('button');
         this.state = false;
+        this.button = null;
         this.icon = '&Phi;'; // '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2"><path d="M17.143 12.5c0-3.498-2.845-6.333-6.357-6.333-3.513 0-6.358 2.835-6.358 6.333s2.845 6.333 6.358 6.333c3.512 0 6.357-2.835 6.357-6.333zm-4.035-3.083l-1.607 3.085-1.608-3.085h3.215zm3.143 5.583c0 1.63-1.326 2.958-2.964 2.958h-2.572v-1.5h2.572c.81 0 1.464-.654 1.464-1.458v-.084c0-.64-.418-1.18-.987-1.376l.662-1.538h-.935l-.618 1.437h-1.607v-1.437h1.607l-.618-1.437h.95l.662 1.538c-.568.196-.968.736-.968 1.376v.084c0 .804.654 1.458 1.464 1.458h2.572v1.5h-2.572c-1.638 0-2.964-1.328-2.964-2.958h-.015v-.084c0-.644.415-1.193.99-1.39l-.683-1.587h1.015l.638 1.475h1.571v-1.475h-1.572l.638-1.475h1.015l-.683 1.587c.576.196.99.746.99 1.39v.084h.016zm-6.358-7.333c2.078 0 3.767 1.682 3.767 3.75s-1.689 3.75-3.767 3.75c-2.078 0-3.767-1.682-3.767-3.75s1.689-3.75 3.767-3.75zm0 1.5c1.183 0 2.143.957 2.143 2.25s-.96 2.25-2.143 2.25c-1.183 0-2.143-.957-2.143-2.25s.96-2.25 2.143-2.25z"/></svg>';
+        this.tag = 'SPAN';
+        this.iconClasses = {
+            base: this.api.styles.inlineToolButton,
+            active: this.api.styles.inlineToolButtonActive
+        };
+        this.actionsElementId = 'ce-latex__actions-wrapper';
+    }
+
+    static get CSS() {
+        return 'cdx-latex-render';
     }
 
     static get toolbox() {
         return {
-            title: 'Greek Letters',
+            title: 'Greek letters and Katex',
             icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2"><path d="M17.143 12.5c0-3.498-2.845-6.333-6.357-6.333-3.513 0-6.358 2.835-6.358 6.333s2.845 6.333 6.358 6.333c3.512 0 6.357-2.835 6.357-6.333zm-4.035-3.083l-1.607 3.085-1.608-3.085h3.215zm3.143 5.583c0 1.63-1.326 2.958-2.964 2.958h-2.572v-1.5h2.572c.81 0 1.464-.654 1.464-1.458v-.084c0-.64-.418-1.18-.987-1.376l.662-1.538h-.935l-.618 1.437h-1.607v-1.437h1.607l-.618-1.437h.95l.662 1.538c-.568.196-.968.736-.968 1.376v.084c0 .804.654 1.458 1.464 1.458h2.572v1.5h-2.572c-1.638 0-2.964-1.328-2.964-2.958h-.015v-.084c0-.644.415-1.193.99-1.39l-.683-1.587h1.015l.638 1.475h1.571v-1.475h-1.572l.638-1.475h1.015l-.683 1.587c.576.196.99.746.99 1.39v.084h.016zm-6.358-7.333c2.078 0 3.767 1.682 3.767 3.75s-1.689 3.75-3.767 3.75c-2.078 0-3.767-1.682-3.767-3.75s1.689-3.75 3.767-3.75zm0 1.5c1.183 0 2.143.957 2.143 2.25s-.96 2.25-2.143 2.25c-1.183 0-2.143-.957-2.143-2.25s.96-2.25 2.143-2.25z"/></svg>',
         };
+    }
+
+    static get isInline() {
+        return true;
     }
 
     checkState(selection: Selection) {
@@ -32,39 +54,124 @@ class InlineGreekLetters {
             return;
         }
 
-        const anchorElement = text instanceof Element ? text : text.parentElement;
-        if (anchorElement) {
-            this.state = !!anchorElement.closest('MARK');
+        const wrapperElement = this.getWrapperElement();
+        const actionsElement = this.getActionsElement();
+        if (!actionsElement) {
+            return;
+        }
+        if (wrapperElement) {
+            this.button?.classList.add(this.iconClasses.active);
+            this.addActionsContent(wrapperElement.innerHTML);
+        } else {
+            this.button?.classList.remove(this.iconClasses.active);
+            this.clear();
         }
     }
 
-    surround() {
-
-        // this.button.classList.add(this.api.styles.inlineToolButton);
-        // this.button.innerHTML = this.config.buttonIcon;
-
-        // this.button.addEventListener('click', () => {
-        const selectedText = window.getSelection()?.toString() + "";
-        const greekLetter = this.createGreekLetter(selectedText);
-        const range = window.getSelection()?.getRangeAt(0);
-        range?.deleteContents();
-        range?.insertNode(greekLetter);
-
+    clear() {
+        const element = this.getActionsElement();
+        if (element) {
+            element.style.display = 'none';
+            element.innerHTML = '';
+        }
     }
 
-    render() {
-        this.button.classList.add(this.api.styles.inlineToolButton);
+    surround(range: any) {
+        const selectedText = window.getSelection()?.toString() + "";
+
+        let wrapperElement = this.getWrapperElement();
+
+        //if we have an element this means we want to remove the symbols
+        if (wrapperElement) {
+            this.unwrap(wrapperElement);
+            this.clear();
+            return;
+        }
+
+        //if no element - add it
+        this.wrap(range);
+        this.addActionsContent(selectedText);
+    }
+
+    render(): HTMLElement|null {
+        this.button = document.createElement('button');
+        this.button.type = 'button';
+        this.button.classList.add(this.iconClasses.base);
         this.button.innerHTML = this.icon;
 
-        // this.button.addEventListener('click', () => {
-        //     const selectedText = window.getSelection()?.toString() + "";
-        //     const greekLetter = this.createGreekLetter(selectedText);
-        //     const range = window.getSelection()?.getRangeAt(0);
-        //     range?.deleteContents();
-        //     range?.insertNode(greekLetter);
-        // });
-
         return this.button;
+    }
+
+    renderActions(): HTMLElement|null {
+        const element = document.createElement('span');
+        element.setAttribute("id", this.actionsElementId)
+        element.style.display = 'none';
+        return element;
+    }
+
+    addActionsContent(selectedText: string) {
+        const greekLetter = this.createGreekLetter(selectedText);
+
+        const element = this.getActionsElement();
+        if (!element) {
+            return;
+        }
+
+        if (greekLetter && greekLetter.textContent) {
+            element.innerHTML = greekLetter.textContent;
+        } else {
+            try {
+                element.innerHTML = katex.renderToString(selectedText);
+            } catch (e) {
+                alert('Incorrect katex expression. Please edit the selected text.');
+                const wrapperElement = this.getWrapperElement();
+                if (wrapperElement) {
+                    this.unwrap(wrapperElement);
+                }
+                this.clear();
+                return;
+            }
+        }
+        element.style.display = 'block';
+    }
+
+    wrap(range: Range) {
+        //Create a wrapper for highlighting
+        let wrapperElement = document.createElement(this.tag);
+
+        wrapperElement.classList.add(Symbols.CSS);
+
+        /**
+         * SurroundContent throws an error if the Range splits a non-Text node with only one of its boundary points
+         * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Range/surroundContents}
+         *
+         * // range.surroundContents(sup);
+         */
+        wrapperElement.appendChild(range.extractContents());
+        range.insertNode(wrapperElement);
+
+        // Expand (add) selection to highlighted block
+        this.api.selection.expandToTag(wrapperElement);
+    }
+
+    unwrap(wrapperElement: HTMLElement) {
+        //Expand selection to all term-tag
+        this.api.selection.expandToTag(wrapperElement);
+
+        let sel = window.getSelection();
+        let range = sel?.getRangeAt(0);
+
+        let unwrappedContent = range?.extractContents();
+        // Remove empty term-tag
+        wrapperElement.parentNode?.removeChild(wrapperElement);
+        if (range && unwrappedContent) {
+            //Insert extracted content
+            range?.insertNode(unwrappedContent);
+
+            // Restore selection
+            sel?.removeAllRanges();
+            sel?.addRange(range);
+        }
     }
 
     createGreekLetter(letter: string) {
@@ -124,22 +231,19 @@ class InlineGreekLetters {
             ...this.config.symbols
         };
 
-
-        // const greekLetterElement = document.createElement('span');
-        // greekLetterElement.textContent = allSymbols[letter] || letter;
-
-        return new Text(allSymbols[letter] || letter); // greekLetterElement;
+        if (letter in allSymbols) {
+            return new Text(allSymbols[letter]);  // greekLetterElement;
+        }
+        return null;
     }
 
-    save() {
-        return {
-            greekLetter: this.button.textContent,
-        };
+    getWrapperElement(): HTMLElement|null {
+        return this.api.selection.findParentTag(this.tag, Symbols.CSS);
     }
 
-    static get isInline() {
-        return true;
+    getActionsElement(): HTMLElement|null {
+        return document.getElementById(this.actionsElementId);
     }
 }
 
-export default InlineGreekLetters;
+export default Symbols;

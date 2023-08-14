@@ -4,7 +4,10 @@
   "description": "Insert greek letters and other symbols in EditorJS.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run clean && tsc && npm run copy-files",
+    "clean": "rm -rf ./dist",
+    "copy-files": "cp -r ./index.css ./dist/"
   },
   "keywords": [
     "EditorJS",
@@ -12,5 +15,9 @@
     "Symbols"
   ],
   "author": "KA",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@types/katex": "^0.16.2",
+    "katex": "^0.16.8"
+  }
 }
