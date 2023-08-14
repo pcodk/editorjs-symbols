@@ -121,7 +121,9 @@ class Symbols {
             element.innerHTML = greekLetter.textContent;
         } else {
             try {
+                console.log(katex.renderToString(selectedText));
                 element.innerHTML = katex.renderToString(selectedText);
+                console.log(element.innerHTML);
             } catch (e) {
                 alert('Incorrect katex expression. Please edit the selected text.');
                 const wrapperElement = this.getWrapperElement();

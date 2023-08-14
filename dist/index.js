@@ -104,7 +104,9 @@ class Symbols {
         }
         else {
             try {
+                console.log(katex_1.default.renderToString(selectedText));
                 element.innerHTML = katex_1.default.renderToString(selectedText);
+                console.log(element.innerHTML);
             }
             catch (e) {
                 alert('Incorrect katex expression. Please edit the selected text.');
