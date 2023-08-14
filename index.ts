@@ -29,7 +29,7 @@ class Symbols {
             base: this.api.styles.inlineToolButton,
             active: this.api.styles.inlineToolButtonActive
         };
-        this.actionsElementId = 'cdx-latex-render-actions';
+        this.actionsElementId = 'ce-latex__actions-wrapper';
     }
 
     static get CSS() {
@@ -62,7 +62,6 @@ class Symbols {
         if (wrapperElement) {
             this.button?.classList.add(this.iconClasses.active);
             this.addActionsContent(wrapperElement.innerHTML);
-            console.log('added');
         } else {
             this.button?.classList.remove(this.iconClasses.active);
             this.clear();
@@ -122,11 +121,8 @@ class Symbols {
             element.innerHTML = greekLetter.textContent;
         } else {
             try {
-                console.log(katex.renderToString(selectedText));
                 element.innerHTML = katex.renderToString(selectedText);
-                console.log(element.innerHTML);
             } catch (e) {
-                console.log('exception')
                 alert('Incorrect katex expression. Please edit the selected text.');
                 const wrapperElement = this.getWrapperElement();
                 if (wrapperElement) {
@@ -136,7 +132,6 @@ class Symbols {
                 return;
             }
         }
-        console.log('ending');
         element.style.display = 'block';
     }
 

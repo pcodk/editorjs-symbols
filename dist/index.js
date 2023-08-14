@@ -25,7 +25,7 @@ class Symbols {
             base: this.api.styles.inlineToolButton,
             active: this.api.styles.inlineToolButtonActive
         };
-        this.actionsElementId = 'cdx-latex-render-actions';
+        this.actionsElementId = 'ce-latex__actions-wrapper';
     }
     static get CSS() {
         return 'cdx-latex-render';
@@ -53,7 +53,6 @@ class Symbols {
         if (wrapperElement) {
             (_a = this.button) === null || _a === void 0 ? void 0 : _a.classList.add(this.iconClasses.active);
             this.addActionsContent(wrapperElement.innerHTML);
-            console.log('added');
         }
         else {
             (_b = this.button) === null || _b === void 0 ? void 0 : _b.classList.remove(this.iconClasses.active);
@@ -105,12 +104,9 @@ class Symbols {
         }
         else {
             try {
-                console.log(katex_1.default.renderToString(selectedText));
                 element.innerHTML = katex_1.default.renderToString(selectedText);
-                console.log(element.innerHTML);
             }
             catch (e) {
-                console.log('exception');
                 alert('Incorrect katex expression. Please edit the selected text.');
                 const wrapperElement = this.getWrapperElement();
                 if (wrapperElement) {
@@ -120,7 +116,6 @@ class Symbols {
                 return;
             }
         }
-        console.log('ending');
         element.style.display = 'block';
     }
     wrap(range) {

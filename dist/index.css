@@ -2,6 +2,7 @@
     color:blue;
     background-color: lightgoldenrodyellow;
 }
-#cdx-latex-render-actions {
+#ce-latex__actions-wrapper {
     padding: 15px;
+    max-width: 200px;
 }
