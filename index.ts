@@ -62,6 +62,7 @@ class Symbols {
         if (wrapperElement) {
             this.button?.classList.add(this.iconClasses.active);
             this.addActionsContent(wrapperElement.innerHTML);
+            console.log('added');
         } else {
             this.button?.classList.remove(this.iconClasses.active);
             this.clear();
@@ -125,6 +126,7 @@ class Symbols {
                 element.innerHTML = katex.renderToString(selectedText);
                 console.log(element.innerHTML);
             } catch (e) {
+                console.log('exception')
                 alert('Incorrect katex expression. Please edit the selected text.');
                 const wrapperElement = this.getWrapperElement();
                 if (wrapperElement) {
@@ -134,6 +136,7 @@ class Symbols {
                 return;
             }
         }
+        console.log('ending');
         element.style.display = 'block';
     }
 
