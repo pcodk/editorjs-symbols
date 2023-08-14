@@ -17,7 +17,7 @@ class Symbols {
     icon: string;
     tag: string;
     iconClasses: { base: string, active: string };
-    actionsElementId: string;
+    actionsElement: HTMLElement|null;
     constructor({ config, api }: any) {
         this.config = config;
         this.api = api;
@@ -29,7 +29,7 @@ class Symbols {
             base: this.api.styles.inlineToolButton,
             active: this.api.styles.inlineToolButtonActive
         };
-        this.actionsElementId = 'ce-latex__actions-wrapper';
+        this.actionsElement = null;
     }
 
     static get CSS() {
@@ -55,10 +55,6 @@ class Symbols {
         }
 
         const wrapperElement = this.getWrapperElement();
-        const actionsElement = this.getActionsElement();
-        if (!actionsElement) {
-            return;
-        }
         if (wrapperElement) {
             this.button?.classList.add(this.iconClasses.active);
             this.addActionsContent(wrapperElement.innerHTML);
@@ -69,10 +65,9 @@ class Symbols {
     }
 
     clear() {
-        const element = this.getActionsElement();
-        if (element) {
-            element.style.display = 'none';
-            element.innerHTML = '';
+        if (this.actionsElement) {
+            this.actionsElement.style.display = 'none';
+            this.actionsElement.innerHTML = '';
         }
     }
 
@@ -103,16 +98,16 @@ class Symbols {
     }
 
     renderActions(): HTMLElement|null {
-        const element = document.createElement('span');
-        element.setAttribute("id", this.actionsElementId)
-        element.style.display = 'none';
-        return element;
+        this.actionsElement = document.createElement('span');
+        this.actionsElement.classList.add('ce-latex__actions-wrapper');
+        this.actionsElement.style.display = 'none';
+        return this.actionsElement;
     }
 
     addActionsContent(selectedText: string) {
         const greekLetter = this.createGreekLetter(selectedText);
 
-        const element = this.getActionsElement();
+        const element = this.actionsElement;
         if (!element) {
             return;
         }
@@ -239,10 +234,6 @@ class Symbols {
 
     getWrapperElement(): HTMLElement|null {
         return this.api.selection.findParentTag(this.tag, Symbols.CSS);
-    }
-
-    getActionsElement(): HTMLElement|null {
-        return document.getElementById(this.actionsElementId);
     }
 }
 

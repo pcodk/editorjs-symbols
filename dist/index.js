@@ -25,7 +25,7 @@ class Symbols {
             base: this.api.styles.inlineToolButton,
             active: this.api.styles.inlineToolButtonActive
         };
-        this.actionsElementId = 'ce-latex__actions-wrapper';
+        this.actionsElement = null;
     }
     static get CSS() {
         return 'cdx-latex-render';
@@ -46,10 +46,6 @@ class Symbols {
             return;
         }
         const wrapperElement = this.getWrapperElement();
-        const actionsElement = this.getActionsElement();
-        if (!actionsElement) {
-            return;
-        }
         if (wrapperElement) {
             (_a = this.button) === null || _a === void 0 ? void 0 : _a.classList.add(this.iconClasses.active);
             this.addActionsContent(wrapperElement.innerHTML);
@@ -60,10 +56,9 @@ class Symbols {
         }
     }
     clear() {
-        const element = this.getActionsElement();
-        if (element) {
-            element.style.display = 'none';
-            element.innerHTML = '';
+        if (this.actionsElement) {
+            this.actionsElement.style.display = 'none';
+            this.actionsElement.innerHTML = '';
         }
     }
     surround(range) {
@@ -88,14 +83,14 @@ class Symbols {
         return this.button;
     }
     renderActions() {
-        const element = document.createElement('span');
-        element.setAttribute("id", this.actionsElementId);
-        element.style.display = 'none';
-        return element;
+        this.actionsElement = document.createElement('span');
+        this.actionsElement.classList.add('ce-latex__actions-wrapper');
+        this.actionsElement.style.display = 'none';
+        return this.actionsElement;
     }
     addActionsContent(selectedText) {
         const greekLetter = this.createGreekLetter(selectedText);
-        const element = this.getActionsElement();
+        const element = this.actionsElement;
         if (!element) {
             return;
         }
@@ -209,9 +204,6 @@ class Symbols {
     }
     getWrapperElement() {
         return this.api.selection.findParentTag(this.tag, Symbols.CSS);
-    }
-    getActionsElement() {
-        return document.getElementById(this.actionsElementId);
     }
 }
 exports.default = Symbols;
